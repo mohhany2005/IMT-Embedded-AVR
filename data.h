@@ -127,23 +127,68 @@ void CancelReservation(u16 id) {
     }
 }
 
-// Edit patient details
 void EditPatient(u16 id) {
-    bool found = false;
+    bool CHK = false;
+
     if (HEAD != NULL) {
         TEMP = HEAD;
         while (TEMP != NULL) {
             if (TEMP->ID == id) {
-                found = true;
-                printf("Patient found:\nID: %d\nName: %s\nGender: %s\nAge: %d\n", 
+                CHK = true;
+                printf("Patient found:\nID: %d\nName: %s\nGender: %s\nAge: %d\n",
                        TEMP->ID, TEMP->name, TEMP->gender, TEMP->age);
-                // (Editing functionality omitted for brevity; use your existing code)
-                break;
+                bool CHO = false;
+                while (!CHO) {
+                    // Use an integer for the menu choice
+                    int choice;
+                    printf("Choose What To Edit:\n");
+                    printf("1. Name\n");
+                    printf("2. Gender\n");
+                    printf("3. Age\n");
+                    scanf("%d", &choice);
+
+                    switch (choice) {
+                        case 1: {
+                            printf("Please Enter The New Name:\n");
+                            string newName;
+                            scanf("%s", newName);
+                            strcpy(TEMP->name, newName);
+                            break;
+                        }
+                        case 2: {
+                            printf("Enter New Gender:\n");
+                            string newGender;
+                            scanf("%s", newGender);
+                            strcpy(TEMP->gender, newGender);
+                            break;
+                        }
+                        case 3: {
+                            printf("Enter New Age:\n");
+                            u8 newAge;
+                            scanf("%d", &newAge);
+                            TEMP->age = newAge;
+                            break;
+                        }
+                        default:
+                            printf("Invalid selection.\n");
+                            break;
+                    }
+                    // Ask if the user wants to edit something else
+                    u8 editChk;
+                    printf("Do You Want To Edit Something else?\n Yes: 1\n No: 2\n");
+                    scanf("%d", &editChk);
+                    if (editChk == 2){
+                        CHO = true;
+                       printf("New Patient Data:\nID: %d\nName: %s\nGender: %s\nAge: %d\n",
+                       TEMP->ID, TEMP->name, TEMP->gender, TEMP->age);
+                    }
+                }
+                break;  // exit the loop after editing the matching patient
             }
             TEMP = TEMP->next;
         }
-        if (!found) {
-            printf("Patient with ID %d is not found.\n", id);
+        if (!CHK) {
+            printf("ID: %d Is Not Found\n", id);
         }
     } else {
         printf("No patients in the clinic.\n");
